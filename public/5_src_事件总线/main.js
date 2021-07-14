@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from "./router/index"
 
 Vue.config.productionTip = false
 
 new Vue({
     beforeCreate() {
-        Vue.prototype.$bus = this
+        Vue.prototype.$bus = this // 安装事件总线
     },
-    router,
     render: h => h(App),
 }).$mount('#app')

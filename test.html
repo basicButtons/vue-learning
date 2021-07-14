@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <style>
+        .bgc {
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <h2>{{sum}}</h2>
+        <input type="text" v-model.number.lazy="value">
+        <button @click="add">ADD</button>
+        <Child @pupu="deal($event)" v-bind="post" :value="value" />
+        <async-component/>
+    </div>
+    <script>
+        Vue.component("Child", {
+            data() {
+                return {
+                    num: 0
+                }
+            },
+            props: ["id", "title", "content", "value"],
+            methods: {
+                show() {
+                    console.log("show")
+                    this.$emit("pupu", this.num)
+                }
+            },
+            template: `<div>
+            <input v-model.number="num ">
+            <h2>{{id}}</h2>
+            <h2>{{title}}</h2>
+            <h2>{{content}}</h2>
+            <button @click="show ">show</button>
+                </div>`
+        })
+        Vue.component("async-component", function(resolve, reject) {
+            setTimeout(function() {
+                console.log("hello")
+                resolve({
+                    template: `
+                    <div class="bgc">
+                        <h2>Hello MX!</h2>
+                    </div>
+                    `
+                })
+            }, 1000)
+        })
+        const vm = new Vue({
+            el: "#root ",
+            data: {
+                sum: 0,
+                value: 0,
+                post: {
+                    id: 1,
+                    title: "MX ",
+                    content: "1233!! "
+                }
+            },
+            methods: {
+                add() {
+                    setTimeout(() => {
+                        this.sum += this.value
+                    }, 100)
+                },
+                deal(event) {
+                    this.sum += event
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
